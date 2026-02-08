@@ -163,7 +163,7 @@ export default function ScrapbookPhotos() {
                         />
 
                         {/* Letter Image */}
-                        <div className="relative w-40 h-40 sm:w-64 sm:h-64 md:w-72 md:h-72">
+                        <div className="relative w-32 h-32 sm:w-64 sm:h-64 md:w-72 md:h-72">
                             <Image
                                 src="/letter.png"
                                 alt="Love Letter"
@@ -244,7 +244,7 @@ export default function ScrapbookPhotos() {
                         />
 
                         {/* Camera Image - For viewing photos */}
-                        <div className="relative w-40 h-40 sm:w-64 sm:h-64 md:w-72 md:h-72">
+                        <div className="relative w-32 h-32 sm:w-64 sm:h-64 md:w-72 md:h-72">
                             <Image
                                 src="/camera.png"
                                 alt="Our Memories"
@@ -428,7 +428,7 @@ export default function ScrapbookPhotos() {
                         />
 
                         <motion.div
-                            className="relative z-10 w-full max-w-sm sm:max-w-md"
+                            className="relative z-10 w-full max-w-[280px] sm:max-w-md"
                             initial={{ scale: 0.8, opacity: 0, y: 50 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.8, opacity: 0, y: 50 }}

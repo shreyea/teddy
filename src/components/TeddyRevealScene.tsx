@@ -48,9 +48,9 @@ export default function TeddyRevealScene() {
                 <FloatingParticles variant={isComplete ? 'celebration' : 'reveal'} />
             </div>
 
-            {/* Top Right Decoration - REM */}
+            {/* Top Right Decoration - REM - Smaller on mobile */}
             <motion.div
-                className="fixed top-4 right-4 w-28 h-28 sm:w-40 sm:h-40 pointer-events-none z-40"
+                className="fixed top-2 right-2 w-16 h-16 sm:w-28 sm:h-28 md:w-40 md:h-40 pointer-events-none z-40"
                 initial={{ opacity: 0, rotate: 20, scale: 0.5 }}
                 animate={{ opacity: 1, rotate: 0, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.8, type: 'spring' }}
