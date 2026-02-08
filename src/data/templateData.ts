@@ -56,7 +56,7 @@ export interface TeddyTemplateData {
     signoff: string;
   };
 
-  // Scrapbook Photos (4 photos)
+  // Scrapbook Photos (3 photos)
   photos: Array<{
     id: string;
     imageUrl: string;
@@ -138,12 +138,6 @@ export const defaultTemplateData: TeddyTemplateData = {
       imageUrl: "/couple/c3.jpg",
       caption: "When we laughed the hardest",
       rotation: -2,
-    },
-    {
-      id: "photo-4",
-      imageUrl: "/couple/c4.jpg",
-      caption: "Forever grateful for you",
-      rotation: 4,
     },
   ],
 
