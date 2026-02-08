@@ -83,30 +83,21 @@ export default function ScrapbookPhotos() {
     return (
         <>
             {/* Main Interactive Section */}
-            <motion.div
-                className="relative w-full min-h-[70vh] flex items-center justify-center py-16"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8 }}
-            >
+            
                 {/* Background blur overlay that appears on scroll */}
-                <motion.div
-                    className="absolute inset-0 bg-gradient-to-b from-pink-50/60 via-white/80 to-rose-50/60 backdrop-blur-sm"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6 }}
-                />
+               
 
                 {/* Content Container - Decorated with curved edges */}
                 <motion.div
-                    className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 px-6 py-8 sm:px-10 sm:py-10 mx-4"
+                    className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 px-4 py-6 sm:px-8 sm:py-8 mx-4"
                     style={{
-                        background: 'linear-gradient(145deg, rgba(255,252,250,0.95) 0%, rgba(255,245,250,0.9) 50%, rgba(255,250,245,0.95) 100%)',
+                        backgroundImage: "url('/hm.png'), linear-gradient(145deg, rgba(255,252,250,0.98) 0%, rgba(255,247,248,0.97) 50%, rgba(255,250,247,0.99) 100%)",
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
                         borderRadius: '28px',
-                        border: '2px solid rgba(255,192,203,0.4)',
-                        boxShadow: '0 20px 60px rgba(219,112,147,0.15), 0 10px 30px rgba(0,0,0,0.08), inset 0 2px 0 rgba(255,255,255,0.9)'
+                        border: '1px solid rgba(255,192,203,0.22)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.7), 0 12px 40px rgba(219,112,147,0.06)'
                     }}
                     initial={{ opacity: 0, y: 50, scale: 0.95 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -115,6 +106,10 @@ export default function ScrapbookPhotos() {
                 >
                     {/* Subtle decorative backdrop for the card area */}
                     <div className="absolute inset-0 rounded-2xl pointer-events-none" />
+
+                    {/* Decorative corner badges */}
+                    <div className="absolute -top-3 -left-3 bg-gradient-to-br from-pink-50/80 to-rose-50/60 rounded-full w-9 h-9 flex items-center justify-center shadow-sm text-pink-500 text-sm">✿</div>
+                    <div className="absolute -top-3 -right-3 bg-gradient-to-br from-amber-50/80 to-rose-50/60 rounded-full w-9 h-9 flex items-center justify-center shadow-sm text-amber-500 text-sm">❀</div>
 
                     {/* Animated sparkles */}
                     <motion.div
@@ -130,7 +125,7 @@ export default function ScrapbookPhotos() {
 
                     {/* Letter Section */}
                     <motion.div
-                        className="relative cursor-pointer group bg-cream-paper/90 rounded-2xl p-3 sm:p-6 shadow-2xl border border-pink-50"
+                        className="relative cursor-pointer group bg-cream-paper/30 rounded-2xl p-2 sm:p-4 shadow-sm border border-pink-25"
                         initial={{ opacity: 0, scale: 0.5, y: 50, rotate: -10 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, rotate: -3 }}
                         viewport={{ once: true, amount: 0.5 }}
@@ -149,11 +144,8 @@ export default function ScrapbookPhotos() {
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowLetterMessage(true)}
                     >
-                        {/* Subtle glow background for card */}
-                        <motion.div
-                            className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-pink-50/40 to-rose-50/20 blur-sm"
-                            aria-hidden
-                        />
+                        {/* Subtle backdrop (now nearly transparent) */}
+                        <motion.div className="absolute -inset-1 rounded-2xl bg-transparent" aria-hidden />
 
                         {/* Letter Image */}
                         <div className="relative w-32 h-32 sm:w-64 sm:h-64 md:w-72 md:h-72">
@@ -199,7 +191,7 @@ export default function ScrapbookPhotos() {
 
                     {/* Camera Section */}
                     <motion.div
-                        className="relative cursor-pointer group bg-cream-paper/90 rounded-2xl p-3 sm:p-6 shadow-2xl border border-amber-50"
+                        className="relative cursor-pointer group bg-cream-paper/30 rounded-2xl p-2 sm:p-4 shadow-sm border border-amber-25"
                         initial={{ opacity: 0, scale: 0.5, y: 100, rotate: 15 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 5 }}
                         viewport={{ once: true, amount: 0.5 }}
@@ -221,11 +213,8 @@ export default function ScrapbookPhotos() {
                             setShowCarousel(true);
                         }}
                     >
-                        {/* Subtle glow background for card */}
-                        <motion.div
-                            className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-amber-50/30 to-rose-50/20 blur-sm"
-                            aria-hidden
-                        />
+                        {/* Subtle backdrop (now nearly transparent) */}
+                        <motion.div className="absolute -inset-1 rounded-2xl bg-transparent" aria-hidden />
 
                         {/* Camera Image - For viewing photos */}
                         <div className="relative w-32 h-32 sm:w-64 sm:h-64 md:w-72 md:h-72">
@@ -266,7 +255,7 @@ export default function ScrapbookPhotos() {
                         </motion.div>
                     </motion.div>
                 </motion.div>
-            </motion.div>
+           
 
             {/* Letter Message Modal */}
             <AnimatePresence>

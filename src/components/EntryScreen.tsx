@@ -89,7 +89,7 @@ export default function EntryScreen({ onRequestLogin }: EntryScreenProps) {
                             ease: 'easeInOut'
                         }}
                         style={{
-                            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+                            boxShadow: '0 6px 18px rgba(0, 0, 0, 0.08)',
                         }}
                     >
                         <Image
@@ -102,7 +102,7 @@ export default function EntryScreen({ onRequestLogin }: EntryScreenProps) {
                     </motion.div>
                 </div>
                 {/* Fade to center */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#fce4ec]/90 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#fce4ec]/40 pointer-events-none" />
             </motion.div>
 
             {/* Right Side - love.png with glow effect */}
@@ -125,7 +125,7 @@ export default function EntryScreen({ onRequestLogin }: EntryScreenProps) {
                             ease: 'easeInOut'
                         }}
                         style={{
-                            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+                            boxShadow: '0 6px 18px rgba(0, 0, 0, 0.08)',
                         }}
                     >
                         <Image
@@ -138,7 +138,7 @@ export default function EntryScreen({ onRequestLogin }: EntryScreenProps) {
                     </motion.div>
                 </div>
                 {/* Fade to center */}
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/70 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/30 pointer-events-none" />
             </motion.div>
 
             {/* Decorative sparkles */}

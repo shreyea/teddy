@@ -109,7 +109,7 @@ export const defaultTemplateData: TeddyTemplateData = {
   ],
 
   hugInteraction: {
-    promptText: "Tap the teddy for a hug 🤍",
+    promptText: "Give the teddy a hug 🤍",
     finalMessage: "This is how safe I feel with you.",
     hugsRequired: 3,
   },
