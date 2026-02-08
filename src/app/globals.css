@@ -1,26 +1,458 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEDDY DAY - "Hug the Teddy" Interactive Love Site Styles
+   Premium, handcrafted, cozy aesthetic with warm textures
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ROOT VARIABLES - Teddy Color Palette
+   ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary Teddy Colors - Warm Browns */
+  --teddy-brown-deep: #8B4513;
+  --teddy-brown-primary: #D4A574;
+  --teddy-brown-soft: #E6C9A8;
+  --teddy-brown-light: #F5E6D3;
+  
+  /* Cream & Peach Base */
+  --cream-warm: #FFF8F0;
+  --cream-soft: #FFFBF5;
+  --cream-paper: #FEF7EE;
+  --cream-antique: #F5EBE0;
+  --peach-soft: #FFECD2;
+  --peach-warm: #FFD8BE;
+  --peach-blush: #FFCAB0;
+  
+  /* Blush Pink Accents */
+  --blush-deep: #E8A0A0;
+  --blush-primary: #F8B4B4;
+  --blush-soft: #FECACA;
+  --blush-light: #FEE2E2;
+  --blush-whisper: #FFF5F5;
+  
+  /* Heart Red */
+  --heart-red: #EF4444;
+  --heart-soft: #F87171;
+  
+  /* Decorative */
+  --gold-shimmer: #D4A574;
+  --gold-light: #FBBF24;
+  
+  /* Shadows & Overlays */
+  --shadow-warm: rgba(139, 69, 19, 0.1);
+  --shadow-soft: rgba(0, 0, 0, 0.06);
+  --overlay-warm: rgba(212, 165, 116, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-handwritten: var(--font-dancing), cursive;
+  --color-teddy-brown-deep: var(--teddy-brown-deep);
+  --color-teddy-brown-primary: var(--teddy-brown-primary);
+  --color-teddy-brown-soft: var(--teddy-brown-soft);
+  --color-teddy-brown-light: var(--teddy-brown-light);
+  --color-cream-warm: var(--cream-warm);
+  --color-cream-soft: var(--cream-soft);
+  --color-cream-paper: var(--cream-paper);
+  --color-peach-soft: var(--peach-soft);
+  --color-peach-warm: var(--peach-warm);
+  --color-blush-primary: var(--blush-primary);
+  --color-blush-soft: var(--blush-soft);
+  --color-heart-red: var(--heart-red);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE STYLES
+   ───────────────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream-paper);
+  color: var(--teddy-brown-deep);
+  font-family: 'Georgia', serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--blush-soft);
+  color: var(--teddy-brown-deep);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TEXTURE OVERLAYS - Paper Grain & Vignette
+   ───────────────────────────────────────────────────────────────────────────── */
+.texture-grain {
+  position: relative;
+}
+
+.texture-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(139, 69, 19, 0.08) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ANIMATED BACKGROUNDS
+   ───────────────────────────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-5px); }
+  75% { transform: translateY(-12px) translateX(3px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+@keyframes squish {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1, 0.9) rotate(-2deg); }
+  50% { transform: scale(0.95, 1.05) rotate(1deg); }
+  75% { transform: scale(1.02, 0.98) rotate(-1deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100px); opacity: 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(248, 180, 180, 0.3), 0 0 40px rgba(248, 180, 180, 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(248, 180, 180, 0.5), 0 0 60px rgba(248, 180, 180, 0.2);
+  }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+.animate-breathe { animation: breathe 3s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+.animate-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+.animate-squish { animation: squish 0.4s ease-out; }
+.animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
+.animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
+.animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   GRADIENT BACKGROUNDS
+   ───────────────────────────────────────────────────────────────────────────── */
+.gradient-teddy {
+  background: linear-gradient(
+    135deg,
+    var(--cream-warm) 0%,
+    var(--peach-soft) 50%,
+    var(--cream-paper) 100%
+  );
+}
+
+.gradient-warm {
+  background: linear-gradient(
+    180deg,
+    var(--cream-soft) 0%,
+    var(--peach-soft) 50%,
+    var(--blush-whisper) 100%
+  );
+}
+
+.gradient-cozy {
+  background: linear-gradient(
+    135deg,
+    var(--peach-soft) 0%,
+    var(--cream-warm) 25%,
+    var(--cream-paper) 50%,
+    var(--blush-light) 75%,
+    var(--peach-warm) 100%
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CARD STYLES
+   ───────────────────────────────────────────────────────────────────────────── */
+.card-paper {
+  background: linear-gradient(145deg, #FFFEFA 0%, #FFF9F2 100%);
+  border-radius: 1rem;
+  box-shadow: 
+    0 4px 20px var(--shadow-warm),
+    0 2px 8px var(--shadow-soft),
+    0 0 0 1px rgba(212, 165, 116, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-paper:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px var(--shadow-warm),
+    0 4px 12px var(--shadow-soft),
+    0 0 0 1px rgba(212, 165, 116, 0.1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   POLAROID FRAME
+   ───────────────────────────────────────────────────────────────────────────── */
+.polaroid {
+  background: white;
+  padding: 0.75rem 0.75rem 2.5rem 0.75rem;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+}
+
+.polaroid-caption {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--teddy-brown-deep);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BUTTON STYLES
+   ───────────────────────────────────────────────────────────────────────────── */
+.btn-teddy {
+  position: relative;
+  background: linear-gradient(135deg, var(--teddy-brown-primary) 0%, var(--teddy-brown-deep) 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.25);
+}
+
+.btn-teddy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--teddy-brown-soft) 0%, var(--teddy-brown-primary) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-teddy:hover::before { opacity: 1; }
+.btn-teddy:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 69, 19, 0.35); }
+.btn-teddy span { position: relative; z-index: 1; }
+
+.btn-heart {
+  position: relative;
+  background: linear-gradient(135deg, var(--blush-primary) 0%, var(--heart-soft) 100%);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(248, 180, 180, 0.4);
+}
+
+.btn-heart:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(248, 180, 180, 0.5);
+}
+
+.btn-muted {
+  background: transparent;
+  color: var(--teddy-brown-soft);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.btn-muted:hover {
+  opacity: 1;
+  color: var(--teddy-brown-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   HEART METER
+   ───────────────────────────────────────────────────────────────────────────── */
+.heart-meter {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-meter-item {
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.heart-meter-item.filled {
+  animation: heartbeat 0.6s ease-out;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CUSTOM SCROLLBAR
+   ───────────────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--teddy-brown-soft), var(--peach-warm));
+  border-radius: 10px;
+  border: 2px solid var(--cream-soft);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--teddy-brown-primary), var(--peach-blush));
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   SPECIAL EFFECTS
+   ───────────────────────────────────────────────────────────────────────────── */
+.glow-warm {
+  box-shadow: 
+    0 0 20px rgba(212, 165, 116, 0.3),
+    0 0 40px rgba(212, 165, 116, 0.15),
+    0 0 60px rgba(212, 165, 116, 0.08);
+}
+
+.glow-heart {
+  box-shadow: 
+    0 0 20px rgba(248, 180, 180, 0.4),
+    0 0 40px rgba(248, 180, 180, 0.2),
+    0 0 60px rgba(248, 180, 180, 0.1);
+}
+
+/* Tape decorations for polaroids */
+.tape {
+  position: absolute;
+  width: 60px;
+  height: 20px;
+  background: linear-gradient(135deg, rgba(255, 236, 210, 0.8) 0%, rgba(255, 216, 190, 0.7) 100%);
+  transform: rotate(-45deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tape::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.2) 3px,
+    rgba(255, 255, 255, 0.2) 6px
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY
+   ───────────────────────────────────────────────────────────────────────────── */
+.text-handwritten {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+}
+
+.text-cozy {
+  color: var(--teddy-brown-deep);
+  letter-spacing: 0.02em;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE UTILITIES
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none; }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop { display: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PARTICLES CONTAINER
+   ───────────────────────────────────────────────────────────────────────────── */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
