@@ -152,8 +152,8 @@ export default function EditorControls() {
 
                 {/* Save Button */}
                 <motion.button
-                    className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all ${isDirty
-                        ? 'bg-teddy-brown-primary text-white hover:bg-teddy-brown-deep'
+                    className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all relative ${isDirty
+                        ? 'bg-teddy-brown-primary text-white hover:bg-teddy-brown-deep animate-pulse'
                         : 'bg-white/80 text-teddy-brown-primary hover:bg-white'
                         } text-sm sm:text-base`}
                     onClick={handleSave}
@@ -167,13 +167,22 @@ export default function EditorControls() {
                         <Save className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                     <span className="font-medium">
-                        {isSaving ? 'Saving...' : isDirty ? 'Save' : 'Saved'}
+                        {isSaving ? 'Saving...' : isDirty ? '💾 Save Changes' : 'Saved'}
                     </span>
+                    
+                    {/* Pulsing indicator for unsaved changes */}
+                    {isDirty && !isSaving && (
+                        <motion.div
+                            className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                        />
+                    )}
                 </motion.button>
 
                 {/* Publish Button */}
                 <motion.button
-                    className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-blush-primary text-white shadow-lg hover:bg-heart-soft transition-all text-sm sm:text-base"
+                    className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-blush-primary text-white shadow-lg hover:bg-heart-soft transition-all text-sm sm:text-base relative"
                     onClick={handlePublish}
                     disabled={isPublishing}
                     whileHover={{ scale: 1.05 }}
@@ -185,8 +194,19 @@ export default function EditorControls() {
                         <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                     <span className="font-medium">
-                        {isPublishing ? 'Publishing...' : 'Publish & Share'}
+                        {isPublishing ? 'Publishing...' : '🚀 Publish & Share'}
                     </span>
+                    
+                    {/* Sparkle effect when ready to publish */}
+                    {!isDirty && !isPublishing && (
+                        <motion.div
+                            className="absolute -top-1 -right-1 text-yellow-300 text-sm"
+                            animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            ✨
+                        </motion.div>
+                    )}
                 </motion.button>
             </motion.div>
 

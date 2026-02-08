@@ -26,12 +26,13 @@ interface PhotoData {
 }
 
 export default function ScrapbookPhotos() {
-    const { templateData: storeData, isEditing, updateField } = useEditorStore();
+    const { templateData: storeData, isEditing, updateField, isDirty } = useEditorStore();
     const templateData = storeData ?? defaultTemplateData;
     const [showLetterMessage, setShowLetterMessage] = useState(false);
     const [showCarousel, setShowCarousel] = useState(false);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const [editingImageIndex, setEditingImageIndex] = useState<number | null>(null);
+    const [uploadSuccess, setUploadSuccess] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const photos = templateData.photos;
@@ -49,6 +50,10 @@ export default function ScrapbookPhotos() {
             p.id === photoId ? { ...p, imageUrl: newUrl } : p
         );
         updateField('photos', updatedPhotos);
+        
+        // Show upload success feedback
+        setUploadSuccess(true);
+        setTimeout(() => setUploadSuccess(false), 3000);
     }, [photos, updateField]);
 
     const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,6 +232,35 @@ export default function ScrapbookPhotos() {
                                     filter: 'drop-shadow(0 20px 40px rgba(180, 130, 100, 0.3))'
                                 }}
                             />
+                            
+                            {/* Upload Success Badge */}
+                            {uploadSuccess && (
+                                <motion.div
+                                    className="absolute -top-2 -right-2 bg-green-500 text-white rounded-full p-2 shadow-lg"
+                                    initial={{ scale: 0, rotate: -45 }}
+                                    animate={{ scale: 1, rotate: 0 }}
+                                    exit={{ scale: 0 }}
+                                >
+                                    <motion.span 
+                                        className="text-lg"
+                                        animate={{ scale: [1, 1.2, 1] }}
+                                        transition={{ duration: 0.6, repeat: 2 }}
+                                    >
+                                        ✓
+                                    </motion.span>
+                                </motion.div>
+                            )}
+                            
+                            {/* Unsaved Changes Indicator */}
+                            {isEditing && isDirty && (
+                                <motion.div
+                                    className="absolute -top-3 -left-3 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg border-2 border-white"
+                                    animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                >
+                                    !
+                                </motion.div>
+                            )}
                         </div>
 
                         {/* Floating hint */}
@@ -236,7 +270,9 @@ export default function ScrapbookPhotos() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.2 }}
                         >
-                            <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}>📸 Our Memories</motion.span>
+                            <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}>
+                                📸 Our Memories{isDirty && isEditing ? ' (Unsaved)' : ''}
+                            </motion.span>
                         </motion.div>
 
                         {/* Flash effect on hover */}
@@ -420,7 +456,7 @@ export default function ScrapbookPhotos() {
                                 transition={{ duration: 0.3 }}
                             >
                                 {/* Photo */}
-                                <div className="relative w-full aspect-square bg-gray-100 overflow-hidden group">
+                                <div className="relative w-full aspect-square bg-gray-100 overflow-hidden">
                                     <Image
                                         src={photos[currentPhotoIndex]?.imageUrl || PLACEHOLDER_IMAGE}
                                         alt={photos[currentPhotoIndex]?.caption || 'Memory'}
@@ -431,21 +467,21 @@ export default function ScrapbookPhotos() {
                                     {/* Vintage overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-br from-amber-100/10 via-transparent to-rose-100/15 pointer-events-none" />
                                     
-                                    {/* Edit Image Button - Only show when editing */}
+                                    {/* Edit Image Button - Always visible when editing (mobile-friendly) */}
                                     {isEditing && (
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+                                        <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center gap-3">
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setEditingImageIndex(currentPhotoIndex);
                                                     fileInputRef.current?.click();
                                                 }}
-                                                className="px-4 py-2 bg-white rounded-full text-gray-800 font-medium flex items-center gap-2 hover:bg-gray-100 transition-colors shadow-lg"
+                                                className="px-5 py-3 bg-white rounded-full text-gray-800 font-medium flex items-center gap-2 active:scale-95 hover:bg-gray-100 transition-all shadow-lg text-sm sm:text-base"
                                             >
                                                 <ImagePlus className="w-5 h-5" />
-                                                <span>Upload Photo</span>
+                                                <span>Tap to Upload</span>
                                             </button>
-                                            <div className="text-white text-xs">or paste image URL below</div>
+                                            <div className="text-white/90 text-xs">or paste image URL below</div>
                                         </div>
                                     )}
                                 </div>
@@ -490,20 +526,20 @@ export default function ScrapbookPhotos() {
                                 </div>
                             </motion.div>
 
-                            {/* Navigation Arrows */}
+                            {/* Navigation Arrows - Mobile-friendly positioning */}
                             {photos.length > 1 && (
                                 <>
                                     <button
-                                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 w-14 h-14 rounded-full bg-white/90 backdrop-blur text-gray-700 shadow-xl flex items-center justify-center hover:bg-white hover:scale-110 transition-all"
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 sm:-translate-x-16 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur text-gray-700 shadow-xl flex items-center justify-center active:scale-95 hover:bg-white hover:scale-110 transition-all z-20"
                                         onClick={prevPhoto}
                                     >
-                                        <ChevronLeft className="w-7 h-7" />
+                                        <ChevronLeft className="w-5 h-5 sm:w-7 sm:h-7" />
                                     </button>
                                     <button
-                                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 w-14 h-14 rounded-full bg-white/90 backdrop-blur text-gray-700 shadow-xl flex items-center justify-center hover:bg-white hover:scale-110 transition-all"
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 sm:translate-x-16 w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur text-gray-700 shadow-xl flex items-center justify-center active:scale-95 hover:bg-white hover:scale-110 transition-all z-20"
                                         onClick={nextPhoto}
                                     >
-                                        <ChevronRight className="w-7 h-7" />
+                                        <ChevronRight className="w-5 h-5 sm:w-7 sm:h-7" />
                                     </button>
                                 </>
                             )}
@@ -522,8 +558,40 @@ export default function ScrapbookPhotos() {
                                         />
                                     ))}
                                 </div>
-                            )}
-                        </motion.div>
+                            )}                            
+                            {/* Save Reminder for Editing Mode */}
+                            {isEditing && (
+                                <motion.div
+                                    className=\"mt-4 text-center bg-amber-50 border border-amber-200 rounded-lg p-3\"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.5 }}
+                                >\n                                    <div className=\"text-sm text-amber-800\">\n                                        💡 <span className=\"font-medium\">Tip:</span> After uploading your photos, \n                                        {isDirty ? (\n                                            <span className=\"font-semibold text-orange-600\">save your changes</span>\n                                        ) : (\n                                            <span className=\"text-green-600\">publish your page</span>\n                                        )} using the buttons in the bottom-right corner!\n                                    </div>\n                                </motion.div>\n                            )}                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Upload Success Notification */}
+            <AnimatePresence>
+                {uploadSuccess && (
+                    <motion.div
+                        className="fixed top-6 left-1/2 -translate-x-1/2 z-[70] bg-green-500 text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3"
+                        initial={{ opacity: 0, y: -50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -50, scale: 0.9 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    >
+                        <motion.span 
+                            className="text-xl"
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            ✨
+                        </motion.span>
+                        <div className="text-center">
+                            <div className="font-medium">Photo uploaded successfully!</div>
+                            <div className="text-sm opacity-90">Don't forget to save & publish your changes</div>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
