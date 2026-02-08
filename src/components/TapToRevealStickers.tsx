@@ -6,15 +6,14 @@ import Image from 'next/image';
 import { Sparkles } from 'lucide-react';
 import { useEditorStore } from '../store/editorStore';
 
-// 4 images - arranged: LEFT (top, middle), RIGHT (top, middle)
+// 3 images - arranged: LEFT (top, middle), RIGHT (top)
 const REVEAL_IMAGES = [
     // LEFT side
     { id: 'img-1', src: '/cute.png', position: 'left', offset: { x: -350, y: -220 }, mobileOffset: { x: 0, y: 0 }, rotation: -5 },
     { id: 'img-2', src: '/heart.png', position: 'left', offset: { x: -530, y: 40 }, mobileOffset: { x: 0, y: 0 }, rotation: -6 },
 
     // RIGHT side
-    { id: 'img-4', src: '/download__19_-removebg-preview.png', position: 'right', offset: { x: 300, y: -210 }, mobileOffset: { x: 0, y: 0 }, rotation: 4 },
-    { id: 'img-5', src: '/Trendy_Coquette_Teddy_Bear_With_Bow-removebg-preview.png', position: 'right', offset: { x: 440, y: 40 }, mobileOffset: { x: 0, y: 0 }, rotation: 6 }
+    { id: 'img-4', src: '/download__19_-removebg-preview.png', position: 'right', offset: { x: 300, y: -210 }, mobileOffset: { x: 0, y: 0 }, rotation: 4 }
 ];
 
 export default function TapToRevealStickers() {
@@ -112,7 +111,7 @@ export default function TapToRevealStickers() {
                 </AnimatePresence>
             </div>
 
-            {/* Mobile: 4 images in horizontal row below teddy */}
+            {/* Mobile: 3 images in horizontal row below teddy */}
             <div className="sm:hidden mt-4 flex justify-center gap-2 flex-wrap">
                 {REVEAL_IMAGES.map((img, index) => (
                     <AnimatePresence key={`mobile-${img.id}`}>
