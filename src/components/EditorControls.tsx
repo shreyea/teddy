@@ -141,30 +141,30 @@ export default function EditorControls() {
 
                 {/* Logout Button */}
                 <motion.button
-                    className="flex items-center gap-2 px-4 py-3 rounded-full bg-white/80 text-teddy-brown-primary shadow-lg hover:bg-white transition-all"
+                    className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-white/80 text-teddy-brown-primary shadow-lg hover:bg-white transition-all text-sm sm:text-base"
                     onClick={handleLogout}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <LogOut className="w-5 h-5" />
+                    <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="font-medium">Exit Edit</span>
                 </motion.button>
 
                 {/* Save Button */}
                 <motion.button
-                    className={`flex items-center gap-2 px-4 py-3 rounded-full shadow-lg transition-all ${isDirty
+                    className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all ${isDirty
                         ? 'bg-teddy-brown-primary text-white hover:bg-teddy-brown-deep'
                         : 'bg-white/80 text-teddy-brown-primary hover:bg-white'
-                        }`}
+                        } text-sm sm:text-base`}
                     onClick={handleSave}
                     disabled={isSaving || !isDirty}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
                     {isSaving ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                     ) : (
-                        <Save className="w-5 h-5" />
+                        <Save className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                     <span className="font-medium">
                         {isSaving ? 'Saving...' : isDirty ? 'Save' : 'Saved'}
@@ -173,16 +173,16 @@ export default function EditorControls() {
 
                 {/* Publish Button */}
                 <motion.button
-                    className="flex items-center gap-2 px-4 py-3 rounded-full bg-blush-primary text-white shadow-lg hover:bg-heart-soft transition-all"
+                    className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 rounded-full bg-blush-primary text-white shadow-lg hover:bg-heart-soft transition-all text-sm sm:text-base"
                     onClick={handlePublish}
                     disabled={isPublishing}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
                     {isPublishing ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                     ) : (
-                        <Share2 className="w-5 h-5" />
+                        <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                     <span className="font-medium">
                         {isPublishing ? 'Publishing...' : 'Publish & Share'}
@@ -214,10 +214,10 @@ export default function EditorControls() {
                         >
                             {/* Close Button */}
                             <button
-                                className="absolute top-4 right-4 p-2 hover:bg-cream-soft rounded-full transition-colors"
+                                className="absolute top-3 right-3 p-1.5 sm:p-2 hover:bg-cream-soft rounded-full transition-colors"
                                 onClick={() => setShowShareModal(false)}
                             >
-                                <X className="w-5 h-5 text-teddy-brown-primary" />
+                                <X className="w-4 h-4 sm:w-5 sm:h-5 text-teddy-brown-primary" />
                             </button>
 
                             {/* Content */}

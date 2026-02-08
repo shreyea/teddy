@@ -113,11 +113,8 @@ export default function ScrapbookPhotos() {
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ delay: 0.2, duration: 0.6, type: 'spring' }}
                 >
-                    {/* Corner decorations */}
-                    <div className="absolute top-3 left-3 text-pink-300 text-2xl sm:text-3xl opacity-60">✿</div>
-                    <div className="absolute top-3 right-3 text-rose-300 text-2xl sm:text-3xl opacity-60">❀</div>
-                    <div className="absolute bottom-3 left-3 text-red-200 text-xl sm:text-2xl opacity-50">♡</div>
-                    <div className="absolute bottom-3 right-3 text-pink-300 text-xl sm:text-2xl opacity-50">♡</div>
+                    {/* Subtle decorative backdrop for the card area */}
+                    <div className="absolute inset-0 rounded-2xl pointer-events-none" />
 
                     {/* Animated sparkles */}
                     <motion.div
@@ -133,7 +130,7 @@ export default function ScrapbookPhotos() {
 
                     {/* Letter Section */}
                     <motion.div
-                        className="relative cursor-pointer group"
+                        className="relative cursor-pointer group bg-cream-paper/90 rounded-2xl p-3 sm:p-6 shadow-2xl border border-pink-50"
                         initial={{ opacity: 0, scale: 0.5, y: 50, rotate: -10 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, rotate: -3 }}
                         viewport={{ once: true, amount: 0.5 }}
@@ -152,14 +149,10 @@ export default function ScrapbookPhotos() {
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowLetterMessage(true)}
                     >
-                        {/* Glow effect */}
+                        {/* Subtle glow background for card */}
                         <motion.div
-                            className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-pink-300/40 via-rose-200/30 to-amber-200/40 blur-xl"
-                            animate={{
-                                scale: [1, 1.1, 1],
-                                opacity: [0.5, 0.8, 0.5]
-                            }}
-                            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                            className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-pink-50/40 to-rose-50/20 blur-sm"
+                            aria-hidden
                         />
 
                         {/* Letter Image */}
@@ -177,17 +170,12 @@ export default function ScrapbookPhotos() {
 
                         {/* Floating hint */}
                         <motion.div
-                            className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-pink-600 shadow-lg border border-pink-100"
+                            className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-pink-600 shadow-sm border border-pink-100"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1 }}
                         >
-                            <motion.span
-                                animate={{ y: [0, -3, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                                💌 Read Me!
-                            </motion.span>
+                            <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>💌 Read Me!</motion.span>
                         </motion.div>
 
                         {/* Sparkle effects */}
@@ -211,7 +199,7 @@ export default function ScrapbookPhotos() {
 
                     {/* Camera Section */}
                     <motion.div
-                        className="relative cursor-pointer group"
+                        className="relative cursor-pointer group bg-cream-paper/90 rounded-2xl p-3 sm:p-6 shadow-2xl border border-amber-50"
                         initial={{ opacity: 0, scale: 0.5, y: 100, rotate: 15 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 5 }}
                         viewport={{ once: true, amount: 0.5 }}
@@ -233,14 +221,10 @@ export default function ScrapbookPhotos() {
                             setShowCarousel(true);
                         }}
                     >
-                        {/* Glow effect */}
+                        {/* Subtle glow background for card */}
                         <motion.div
-                            className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-amber-200/40 via-pink-200/30 to-rose-300/40 blur-xl"
-                            animate={{
-                                scale: [1, 1.1, 1],
-                                opacity: [0.5, 0.8, 0.5]
-                            }}
-                            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                            className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-amber-50/30 to-rose-50/20 blur-sm"
+                            aria-hidden
                         />
 
                         {/* Camera Image - For viewing photos */}
@@ -258,17 +242,12 @@ export default function ScrapbookPhotos() {
 
                         {/* Floating hint */}
                         <motion.div
-                            className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-amber-700 shadow-lg border border-amber-100"
+                            className="absolute -top-5 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-amber-700 shadow-sm border border-amber-100"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.2 }}
                         >
-                            <motion.span
-                                animate={{ y: [0, -3, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-                            >
-                                📸 Our Memories
-                            </motion.span>
+                            <motion.span animate={{ y: [0, -3, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}>📸 Our Memories</motion.span>
                         </motion.div>
 
                         {/* Flash effect on hover */}
@@ -281,17 +260,9 @@ export default function ScrapbookPhotos() {
                         </motion.div>
 
                         {/* Mini polaroids peek */}
-                        <motion.div
-                            className="absolute -bottom-4 -right-4 w-12 h-14 bg-white rounded-sm shadow-lg transform rotate-12 opacity-80"
-                            style={{ padding: '2px' }}
-                        >
+                        {/* Mini polaroids peek (smaller and simpler) */}
+                        <motion.div className="absolute -bottom-3 -right-4 w-10 h-12 bg-white rounded-sm shadow-md transform rotate-6 opacity-80" style={{ padding: '2px' }}>
                             <div className="w-full h-full bg-gradient-to-br from-pink-100 to-rose-100 rounded-sm" />
-                        </motion.div>
-                        <motion.div
-                            className="absolute -bottom-2 -right-8 w-10 h-12 bg-white rounded-sm shadow-md transform -rotate-6 opacity-60"
-                            style={{ padding: '2px' }}
-                        >
-                            <div className="w-full h-full bg-gradient-to-br from-amber-100 to-orange-100 rounded-sm" />
                         </motion.div>
                     </motion.div>
                 </motion.div>
@@ -312,11 +283,10 @@ export default function ScrapbookPhotos() {
                         />
 
                         <motion.div
-                            className="relative bg-[#fff9f0] p-8 sm:p-12 max-w-lg w-full shadow-2xl overflow-hidden"
+                            className="relative bg-cream-paper p-6 sm:p-8 max-w-md w-full shadow-2xl overflow-hidden rounded-lg"
                             style={{
-                                borderRadius: '4px',
-                                backgroundSize: '20px 20px',
-                                backgroundImage: 'linear-gradient(#f5e5e0 1px, transparent 1px), linear-gradient(90deg, #f5e5e0 1px, transparent 1px)'
+                                backgroundSize: '18px 18px',
+                                backgroundImage: 'linear-gradient(#fbf2ea 1px, transparent 1px), linear-gradient(90deg, #fbf2ea 1px, transparent 1px)'
                             }}
                             initial={{ scale: 0.5, y: 100, opacity: 0, rotate: 10 }}
                             animate={{ scale: 1, y: 0, opacity: 1, rotate: 0 }}
@@ -326,15 +296,19 @@ export default function ScrapbookPhotos() {
                         >
                             {/* Decorative tape */}
                             <div
-                                className="absolute -top-4 left-1/2 -translate-x-1/2 w-36 h-10 bg-gradient-to-r from-pink-200/60 via-pink-100/80 to-pink-200/60 rotate-[-1deg]"
-                                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                                className="absolute -top-4 left-1/2 -translate-x-1/2 w-28 h-8 rounded-md rotate-[-6deg]"
+                                style={{
+                                    background: 'linear-gradient(90deg, rgba(255,230,200,0.95) 0%, rgba(255,245,220,0.95) 50%, rgba(255,230,200,0.95) 100%)',
+                                    boxShadow: '0 6px 18px rgba(0,0,0,0.06) inset, 0 2px 8px rgba(0,0,0,0.08)'
+                                }}
+                                aria-hidden
                             />
 
                             <button
                                 onClick={() => setShowLetterMessage(false)}
-                                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600 transition-all flex items-center justify-center shadow-md"
+                                className="absolute top-3 right-3 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all flex items-center justify-center shadow-sm"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-4 h-4 sm:w-5 sm:h-5" />
                             </button>
 
                             <div className="text-center mt-4">
@@ -437,10 +411,10 @@ export default function ScrapbookPhotos() {
                         >
                             {/* Close button */}
                             <button
-                                className="absolute -top-3 -right-3 z-30 w-10 h-10 rounded-full bg-white text-gray-800 shadow-xl flex items-center justify-center hover:bg-gray-100 transition-all transform hover:scale-110"
+                                className="absolute -top-3 -right-3 z-30 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white text-gray-800 shadow-xl flex items-center justify-center hover:bg-gray-100 transition-all transform hover:scale-110"
                                 onClick={() => setShowCarousel(false)}
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-4 h-4 sm:w-5 sm:h-5" />
                             </button>
 
                             {/* Polaroid Frame */}
