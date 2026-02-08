@@ -1,258 +1,147 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { Heart } from 'lucide-react';
 import { useEditorStore } from '../store/editorStore';
 import { defaultTemplateData } from '../data/templateData';
 
-// Default teddy placeholder SVG
-const DEFAULT_TEDDY = `data:image/svg+xml,${encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
-  <!-- Body -->
-  <ellipse cx="100" cy="140" rx="60" ry="70" fill="#D4A574"/>
-  <ellipse cx="100" cy="140" rx="55" ry="65" fill="#E6C9A8"/>
-  
-  <!-- Belly -->
-  <ellipse cx="100" cy="150" rx="35" ry="40" fill="#F5E6D3"/>
-  
-  <!-- Head -->
-  <circle cx="100" cy="60" r="50" fill="#D4A574"/>
-  <circle cx="100" cy="60" r="45" fill="#E6C9A8"/>
-  
-  <!-- Ears -->
-  <circle cx="55" cy="25" r="18" fill="#D4A574"/>
-  <circle cx="55" cy="25" r="12" fill="#F8B4B4"/>
-  <circle cx="145" cy="25" r="18" fill="#D4A574"/>
-  <circle cx="145" cy="25" r="12" fill="#F8B4B4"/>
-  
-  <!-- Muzzle -->
-  <ellipse cx="100" cy="75" rx="20" ry="15" fill="#F5E6D3"/>
-  
-  <!-- Nose -->
-  <ellipse cx="100" cy="70" rx="8" ry="6" fill="#8B4513"/>
-  
-  <!-- Eyes -->
-  <circle cx="80" cy="55" r="8" fill="#2D1810"/>
-  <circle cx="120" cy="55" r="8" fill="#2D1810"/>
-  <circle cx="82" cy="53" r="3" fill="white"/>
-  <circle cx="122" cy="53" r="3" fill="white"/>
-  
-  <!-- Smile -->
-  <path d="M90 82 Q100 90 110 82" stroke="#8B4513" stroke-width="2" fill="none" stroke-linecap="round"/>
-  
-  <!-- Arms -->
-  <ellipse cx="45" cy="130" rx="15" ry="25" fill="#D4A574" transform="rotate(-20 45 130)"/>
-  <ellipse cx="155" cy="130" rx="15" ry="25" fill="#D4A574" transform="rotate(20 155 130)"/>
-  
-  <!-- Legs -->
-  <ellipse cx="70" cy="200" rx="20" ry="15" fill="#D4A574"/>
-  <ellipse cx="130" cy="200" rx="20" ry="15" fill="#D4A574"/>
-  
-  <!-- Heart on belly -->
-  <path d="M100 145 C95 138 85 138 85 148 C85 155 100 165 100 165 C100 165 115 155 115 148 C115 138 105 138 100 145" fill="#F8B4B4"/>
-</svg>
-`)}`;
+// Type for the floating hearts
+interface FloatingHeart {
+    id: number;
+    x: number;
+    y: number;
+    size: number;
+}
 
 export default function TeddyCenterpiece() {
-    const { templateData: storeData, isEditing, incrementHugCount, hugCount } = useEditorStore();
+    const {
+        templateData: storeData,
+        isEditing,
+        updateField,
+        incrementHugCount,
+    } = useEditorStore();
+
     const templateData = storeData ?? defaultTemplateData;
-    const [isSquishing, setIsSquishing] = useState(false);
-    const [showBigHearts, setShowBigHearts] = useState(false);
-    const isComplete = hugCount >= templateData.hugInteraction.hugsRequired;
+    const [isSquished, setIsSquished] = useState(false);
+    const [hearts, setHearts] = useState<FloatingHeart[]>([]);
+    let heartIdCounter = 0;
 
-    const handleTeddyClick = useCallback(() => {
-        // Always show hearts animation on every click
-        setIsSquishing(true);
-        setShowBigHearts(true);
+    const handleTeddyUrlEdit = (newUrl: string) => {
+        updateField('teddy', { ...templateData.teddy, imageUrl: newUrl });
+    };
 
-        // Only increment hug count if not complete
-        if (!isComplete) {
-            incrementHugCount();
-        }
+    const handleTeddyClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        // Squish animation
+        setIsSquished(true);
+        setTimeout(() => setIsSquished(false), 200);
 
+        // Increment hug count
+        incrementHugCount();
+
+        // Create a floating heart
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const newHeart: FloatingHeart = {
+            id: heartIdCounter++,
+            x,
+            y,
+            size: Math.random() * 20 + 30, // Random size between 30 and 50
+        };
+
+        setHearts(prev => [...prev, newHeart]);
+
+        // Remove the heart after animation
         setTimeout(() => {
-            setIsSquishing(false);
-        }, 400);
+            setHearts(currentHearts => currentHearts.filter(h => h.id !== newHeart.id));
+        }, 2000);
 
-        // Keep big hearts visible for 3 seconds
-        setTimeout(() => {
-            setShowBigHearts(false);
-        }, 3000);
-    }, [isComplete, incrementHugCount]);
+    }, [incrementHugCount]);
 
-    const teddyImage = templateData.teddy.imageUrl || DEFAULT_TEDDY;
+    const teddyImage = templateData.teddy.imageUrl || '/teddy.png';
 
     return (
-        <motion.div
-            className="relative cursor-pointer select-none"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0,
-            }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            onClick={handleTeddyClick}
-        >
-            {/* Shadow */}
+        <div className="relative flex flex-col items-center justify-center">
+            {/* Responsive container for the teddy and hearts */}
             <motion.div
-                className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-48 h-8 bg-black/10 rounded-full blur-xl"
-                animate={{
-                    scale: isSquishing ? 1.1 : [1, 1.02, 1],
-                    opacity: isSquishing ? 0.15 : [0.1, 0.12, 0.1],
-                }}
-                transition={{
-                    duration: isSquishing ? 0.2 : 3,
-                    repeat: isSquishing ? 0 : Infinity,
-                    ease: 'easeInOut',
-                }}
-            />
-
-            {/* Teddy Container */}
-            <motion.div
-                className="relative w-64 h-72 sm:w-72 sm:h-80"
-                animate={
-                    isSquishing
-                        ? {
-                            scale: [1, 1.1, 0.95, 1.02, 1],
-                            rotate: [0, -3, 2, -1, 0],
-                        }
-                        : {
-                            scale: [1, 1.04, 1],
-                            rotate: [0, 1, 0],
-                        }
-                }
-                transition={
-                    isSquishing
-                        ? { duration: 0.4, ease: 'easeOut' }
-                        : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
-                }
-                style={{ transformOrigin: 'center bottom' }}
+                className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 cursor-pointer group"
+                onClick={handleTeddyClick}
+                animate={{ scale: isSquished ? [1, 0.95, 1] : 1 }}
+                transition={{ duration: 0.2 }}
             >
-                {/* Glow effect on complete */}
-                {isComplete && (
-                    <motion.div
-                        className="absolute inset-0 rounded-full glow-heart"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1 }}
-                    />
-                )}
-
                 {/* Teddy Image */}
-                <Image
-                    src={teddyImage}
-                    alt={templateData.teddy.altText}
-                    fill
-                    className="object-contain drop-shadow-2xl"
-                    priority
-                    unoptimized={teddyImage.startsWith('data:')}
-                />
+                <motion.div
+                    className="w-full h-full"
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                >
+                    <Image
+                        src={teddyImage}
+                        alt="Cute Teddy Bear"
+                        fill
+                        priority
+                        className="object-contain drop-shadow-teddy"
+                    />
+                </motion.div>
 
-                {/* Heart particles on hug */}
-                {isSquishing && (
-                    <>
-                        {[...Array(6)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute left-1/2 top-1/2 text-2xl"
-                                initial={{
-                                    x: 0,
-                                    y: 0,
-                                    opacity: 1,
-                                    scale: 0.5
+                {/* Floating Hearts Container */}
+                <AnimatePresence>
+                    {hearts.map(heart => (
+                        <motion.div
+                            key={heart.id}
+                            className="absolute"
+                            initial={{
+                                top: heart.y,
+                                left: heart.x,
+                                opacity: 1,
+                                scale: 0,
+                            }}
+                            animate={{
+                                top: heart.y - 150,
+                                opacity: 0,
+                                scale: 1,
+                            }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 2, ease: 'easeOut' }}
+                            style={{ pointerEvents: 'none' }}
+                        >
+                            <Heart
+                                className="text-heart-red"
+                                fill="currentColor"
+                                style={{
+                                    width: heart.size,
+                                    height: heart.size,
+                                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
                                 }}
-                                animate={{
-                                    x: (Math.random() - 0.5) * 150,
-                                    y: -50 - Math.random() * 100,
-                                    opacity: 0,
-                                    scale: 1 + Math.random() * 0.5,
-                                    rotate: Math.random() * 60 - 30,
-                                }}
-                                transition={{
-                                    duration: 1,
-                                    delay: i * 0.05,
-                                    ease: 'easeOut',
-                                }}
-                            >
-                                💕
-                            </motion.div>
-                        ))}
-                    </>
-                )}
+                            />
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
             </motion.div>
 
-            {/* BIG SCREEN-WIDE HEARTS on click */}
-            {showBigHearts && (
-                <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-                    {[...Array(10)].map((_, i) => {
-                        // Create a 5x2 grid with random offsets for proper spacing
-                        const col = i % 5;
-                        const row = Math.floor(i / 5);
-                        const baseLeft = 5 + col * 18; // 5 columns spread across width
-                        const baseTop = 15 + row * 40; // 2 rows
-                        const randomOffsetX = (Math.random() - 0.5) * 10;
-                        const randomOffsetY = (Math.random() - 0.5) * 15;
-
-                        return (
-                            <motion.div
-                                key={`big-heart-${i}`}
-                                className="absolute text-5xl sm:text-7xl"
-                                style={{
-                                    left: `${baseLeft + randomOffsetX}%`,
-                                    top: `${baseTop + randomOffsetY}%`,
-                                }}
-                                initial={{
-                                    opacity: 0,
-                                    scale: 0,
-                                    rotate: Math.random() * 40 - 20,
-                                }}
-                                animate={{
-                                    opacity: [0, 0.5, 0.6, 0.4, 0],
-                                    scale: [0, 1.3, 1.1, 0.9],
-                                    y: [0, -20, -40, -80],
-                                    rotate: Math.random() * 50 - 25,
-                                }}
-                                transition={{
-                                    duration: 2.5,
-                                    delay: i * 0.08,
-                                    ease: 'easeOut',
-                                }}
-                            >
-                                {['❤️', '💕', '💖', '💗', '💓', '🩷', '💝', '💘', '❤️', '💖'][i]}
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            )}
-
-            {/* Click hint when not complete */}
-            {!isComplete && hugCount === 0 && (
+            {/* Edit Mode UI */}
+            {isEditing && (
                 <motion.div
-                    className="absolute -bottom-8 left-1/2 -translate-x-1/2"
-                    initial={{ opacity: 0, y: -10 }}
+                    className="mt-4 w-full max-w-sm"
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5, duration: 0.5 }}
+                    transition={{ delay: 0.2 }}
                 >
-                    <motion.span
-                        className="text-sm text-teddy-brown-primary/60 whitespace-nowrap"
-                        animate={{ y: [0, -3, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                        tap me! 🤍
-                    </motion.span>
+                    <label className="block text-center text-sm font-medium text-teddy-brown-primary mb-2">
+                        Teddy Image URL
+                    </label>
+                    <input
+                        type="text"
+                        value={teddyImage}
+                        onChange={(e) => handleTeddyUrlEdit(e.target.value)}
+                        className="w-full px-3 py-2 bg-white/60 border-2 border-dashed border-teddy-brown-soft rounded-lg shadow-inner text-sm text-teddy-brown-deep placeholder-teddy-brown-primary/70 focus:outline-none focus:border-teddy-brown-primary focus:ring-1 focus:ring-teddy-brown-primary"
+                        placeholder="Enter image URL..."
+                    />
                 </motion.div>
             )}
-
-            {/* Edit overlay */}
-            {isEditing && (
-                <div className="absolute inset-0 border-2 border-dashed border-teddy-brown-primary/30 rounded-lg flex items-center justify-center bg-white/20 backdrop-blur-sm opacity-0 hover:opacity-100 transition-opacity">
-                    <span className="text-teddy-brown-deep text-sm font-medium bg-white/80 px-3 py-1 rounded-full">
-                        Click to change teddy
-                    </span>
-                </div>
-            )}
-        </motion.div>
+        </div>
     );
 }
