@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import EntryScreen from '../../../components/EntryScreen';
 import TeddyRevealScene from '../../../components/TeddyRevealScene';
 import { useEditorStore } from '../../../store/editorStore';
-import { getProjectBySlug } from '../../../lib/projects';
+import { getPublishedProjectBySlug } from "../../../lib/projects";
 
 export default function ViewPage() {
     const params = useParams();
@@ -23,7 +23,7 @@ export default function ViewPage() {
     useEffect(() => {
         async function loadProject() {
             try {
-                const project = await getProjectBySlug(slug);
+                const project = await getPublishedProjectBySlug(slug);
 
                 if (!project) {
                     setNotFound(true);
