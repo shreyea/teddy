@@ -562,11 +562,21 @@ export default function ScrapbookPhotos() {
                             {/* Save Reminder for Editing Mode */}
                             {isEditing && (
                                 <motion.div
-                                    className=\"mt-4 text-center bg-amber-50 border border-amber-200 rounded-lg p-3\"
+                                    className="mt-4 text-center bg-amber-50 border border-amber-200 rounded-lg p-3"
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.5 }}
-                                >\n                                    <div className=\"text-sm text-amber-800\">\n                                        💡 <span className=\"font-medium\">Tip:</span> After uploading your photos, \n                                        {isDirty ? (\n                                            <span className=\"font-semibold text-orange-600\">save your changes</span>\n                                        ) : (\n                                            <span className=\"text-green-600\">publish your page</span>\n                                        )} using the buttons in the bottom-right corner!\n                                    </div>\n                                </motion.div>\n                            )}                        </motion.div>
+                                >
+                                    <div className="text-sm text-amber-800">
+                                        💡 <span className="font-medium">Tip:</span> After uploading your photos, 
+                                        {isDirty ? (
+                                            <span className="font-semibold text-orange-600">save your changes</span>
+                                        ) : (
+                                            <span className="text-green-600">publish your page</span>
+                                        )} using the buttons in the bottom-right corner!
+                                    </div>
+                                </motion.div>
+                            )}                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
